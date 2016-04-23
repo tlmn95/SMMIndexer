@@ -1,0 +1,16 @@
+/target/
+venv/
+db.sqlite3
+
+*.pyc
+*~
+
+*.DS_Store
+/.DS_Store
+
+*.idea
+
+npm-debug.log
+
+.bowerrc
+/.bowerrc
