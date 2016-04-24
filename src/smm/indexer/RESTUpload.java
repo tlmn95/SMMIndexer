@@ -21,6 +21,7 @@ import com.sun.jersey.multipart.FormDataParam;
 public class RESTUpload {
 	private String UploadURL = "D://uploaded/";
 	
+	@SuppressWarnings("finally")
 	@POST
 	@Path("/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -40,14 +41,24 @@ public class RESTUpload {
 
 	}
 	*/
-	public void uploadMultiple(@FormDataParam("file") FormDataBodyPart body){
-	    for(BodyPart part : body.getParent().getBodyParts()){
-	        InputStream is = part.getEntityAs(InputStream.class);
-	        ContentDisposition meta = part.getContentDisposition();
-	        String Position = UploadURL + meta.getFileName();
-	        writeToFile(is, Position);
-	        System.out.println( "Upload " + meta.getFileName() + " successful");
-	    }
+	public Response uploadMultiple(@FormDataParam("file") FormDataBodyPart body){
+		String output = "";
+		try {
+			for(BodyPart part : body.getParent().getBodyParts()){
+				InputStream is = part.getEntityAs(InputStream.class);
+				ContentDisposition meta = part.getContentDisposition();
+				String Position = UploadURL + meta.getFileName();
+				writeToFile(is, Position);
+				output += "Upload " + meta.getFileName() + " successful\n";
+			}
+		}
+		catch ( Exception e ) {
+			output += "Upload the rest failed\n";
+			return Response.status( 404 ).entity( output ).build();
+		}
+		finally {
+			return Response.status( 404 ).entity( output ).build();
+		}
 	}
 
 	// save uploaded file to new location
