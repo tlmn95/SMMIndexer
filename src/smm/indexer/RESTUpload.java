@@ -10,7 +10,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import com.sun.jersey.core.header.ContentDisposition;
 import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.BodyPart;
+import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/file")
@@ -20,6 +24,7 @@ public class RESTUpload {
 	@POST
 	@Path("/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	/*
 	public Response uploadFile(
 		@FormDataParam("file") InputStream uploadedInputStream,
 		@FormDataParam("file") FormDataContentDisposition fileDetail) {
@@ -33,6 +38,16 @@ public class RESTUpload {
 
 		return Response.status(200).entity(output).build();
 
+	}
+	*/
+	public void uploadMultiple(@FormDataParam("file") FormDataBodyPart body){
+	    for(BodyPart part : body.getParent().getBodyParts()){
+	        InputStream is = part.getEntityAs(InputStream.class);
+	        ContentDisposition meta = part.getContentDisposition();
+	        String Position = UploadURL + meta.getFileName();
+	        writeToFile(is, Position);
+	        System.out.println( "Upload " + meta.getFileName() + " successful");
+	    }
 	}
 
 	// save uploaded file to new location
