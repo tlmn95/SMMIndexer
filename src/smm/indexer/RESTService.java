@@ -30,9 +30,8 @@ public class RESTService {
 	static final String INDEXNAME = "smm";
 	
 	@POST
-	@Path("/crunchifyService")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response crunchifyREST(InputStream incomingData) {
+	public Response indexRESTService(InputStream incomingData) {
 		try {
 			es = new ElasticSearchConnection(ELASTIC_HOSTNAME);
 		} catch (Exception e) {
@@ -50,28 +49,28 @@ public class RESTService {
 			System.out.println("Error Parsing: - ");
 		}
 		
-		Gson gson = new Gson();
-		System.out.println("-------------HERE---------------------------------");
-		
+		Gson gson = new Gson();		
 		try{
 			SMMDocument smmdoc = gson.fromJson(data, SMMDocument.class);
 			
 			System.out.println(smmdoc.toJson());
 			
 			String checkStatus = checkInputData(smmdoc);
-			if (checkStatus == "OK")
-				es.createIndexResponse(INDEXNAME, "article", smmdoc.getId(), smmdoc.toJson());
+			if (checkStatus == "OK"){
+				String _id = smmdoc.getSource() + "_" + smmdoc.getId();
+				es.createIndexResponse(INDEXNAME, "article", _id, smmdoc.toJson());
+			}
 			else 
 				return Response.status(409).entity(checkStatus).build();
 		} catch (JsonParseException e){
-			System.out.println("Error while parsing, check your data format");
-			return Response.status(409).entity("Error while parsing, check your data format").build();
+			System.out.println("Error while parsing, check your data");
+			return Response.status(409).entity("Error while parsing, check your data").build();
 		} catch (NoNodeAvailableException e){
 			System.out.println("No elasticsearch node is available");
 			return Response.status(500).entity("No elasticsearch node is available").build();
 		} catch (Exception e){
 			e.printStackTrace();
-			System.out.println("Error here");
+			System.out.println("Error!");
 			return Response.status(500).entity("There is some errors").build();
 		}
 		
@@ -99,6 +98,8 @@ public class RESTService {
 			return "Missing \'Content\' field";
 		if (!checkDateFormat(doc.getDate()))
 			return "Invalid Date format";
+		if (doc.getSource() == null)
+			return "Missing \'Source\' field";
 		return "OK";
 	}
 	
@@ -106,7 +107,7 @@ public class RESTService {
 	@Path("/verify")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response verifyRESTService(InputStream incomingData) {
-		String result = "CrunchifyRESTService Successfully started..";
+		String result = "Service Successfully started..";
  
 		// return HTTP response 200 in case of success
 		return Response.status(200).entity(result).build();

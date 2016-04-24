@@ -24,9 +24,9 @@ public class ClientTest {
 		
 		String string = "";
 		try { 
-			InputStream crunchifyInputStream = new FileInputStream("/Users/TLMN/Desktop/CrunchifyJSON.txt");
-			InputStreamReader crunchifyReader = new InputStreamReader(crunchifyInputStream);
-			BufferedReader br = new BufferedReader(crunchifyReader);
+			InputStream inputstream = new FileInputStream("/Users/TLMN/Desktop/CrunchifyJSON.txt");
+			InputStreamReader reader = new InputStreamReader(inputstream);
+			BufferedReader br = new BufferedReader(reader);
 			String line;
 			while ((line = br.readLine()) != null) {
 				string += line + "\n";
@@ -60,28 +60,25 @@ public class ClientTest {
 					    JSON_STRING,
 					    ContentType.APPLICATION_JSON);
 
-				HttpPost postMethod = new HttpPost("http://localhost:8080/CrunchifyTutorials/api/crunchifyService");
+				HttpPost postMethod = new HttpPost("http://localhost:8080/SMMIndexer/index/");
 				postMethod.setEntity(requestEntity);
 
-				CloseableHttpResponse response1 = httpClient.execute(postMethod);
-				System.out.println("\nCrunchify REST Service Invoked Successfully..");
+				CloseableHttpResponse response = httpClient.execute(postMethod);
+				System.out.println("\nREST Service Invoked Successfully..");
 				try {
-				    System.out.println("Status code: " + response1.getStatusLine().getStatusCode());
-				    HttpEntity entity1 = response1.getEntity();
-				    // do something useful with the response body
-				    // and ensure it is fully consumed
-				    // System.out.println(EntityUtils.toString(entity1));
+				    System.out.println("Status code: " + response.getStatusLine().getStatusCode());
+				    HttpEntity entity = response.getEntity();
 				    
-					// jsonObject = new JSONObject(string);
-					System.out.println("Response from server: " + EntityUtils.toString(entity1));
-				    EntityUtils.consume(entity1);
+					System.out.println("Response from server: " + EntityUtils.toString(entity));
+					
+				    EntityUtils.consume(entity);
 				} finally {
-				    response1.close();
+				    response.close();
 				    httpClient.close();
 				}
 				
 			} catch (Exception e) {
-				System.out.println("\nError while calling Crunchify REST Service");
+				System.out.println("\nError while calling REST Service");
 				System.out.println(e);
 			} finally {
 				// in.close();
