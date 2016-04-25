@@ -17,6 +17,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
+
+import common.base.SMMDocument;
  
 
 public class ClientTest {	
@@ -33,8 +35,7 @@ public class ClientTest {
 			}
 			JSONObject jsonObject = new JSONObject(string);
 			System.out.println(jsonObject);
- 
-			// Step2: Now pass JSON File Data to REST Service
+		
 			try {
 				/*
 				URL url = new URL("http://localhost:8080/CrunchifyTutorials/api/crunchifyService");

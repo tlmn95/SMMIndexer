@@ -23,7 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
 @Path("/")
-public class RESTService {
+public class RESTIndexService {
 	static ElasticSearchConnection es;
 	
 	static final String ELASTIC_HOSTNAME = "localhost";

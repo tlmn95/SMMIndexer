@@ -19,7 +19,7 @@ import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/file")
 public class RESTUpload {
-	private String UploadURL = "D://uploaded/";
+	private String UploadURL = "/Users/TLMN/Git/SMMIndexer/WebContent/data/";
 	
 	@POST
 	@Path("/upload")
