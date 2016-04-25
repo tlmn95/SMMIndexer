@@ -19,7 +19,7 @@ import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/file")
 public class RESTUpload {
-	private String UploadURL = "/Users/TLMN/Git/SMMIndexer/WebContent/data/";
+	private String path = "/Users/TLMN/Git/SMMIndexer/WebContent/data/";
 	
 	@SuppressWarnings("finally")
 	@POST
@@ -41,14 +41,14 @@ public class RESTUpload {
 
 	}
 	*/
-	public Response uploadMultiple(@FormDataParam("file") FormDataBodyPart body){
+	public Response uploadMultiple(@FormDataParam("files") FormDataBodyPart body){
 		String output = "";
 		try {
 			for(BodyPart part : body.getParent().getBodyParts()){
 				InputStream is = part.getEntityAs(InputStream.class);
 				ContentDisposition meta = part.getContentDisposition();
-				String Position = UploadURL + meta.getFileName();
-				writeToFile(is, Position);
+				String save_location = path + meta.getFileName();
+				writeToFile(is, save_location);
 				output += "Upload " + meta.getFileName() + " successful\n";
 			}
 		}

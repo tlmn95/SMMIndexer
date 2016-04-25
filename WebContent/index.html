@@ -3,21 +3,11 @@
 		<script src="data/jquery.min.js"> </script>
 </head>
 <body>
-	<h1>File Upload with Jersey</h1>
+	<h1>Upload file</h1>
  
 	<form action="index/file/upload" method="post" enctype="multipart/form-data">
- 		<ul id="item-list">
- 		</ul>
- 		<input type="button" value="Add" id="add"/> 
-	   <input type="submit" value="Upload All" />
+		<label>Select multiple files</label><input type= "file" name="files" multiple /> <br/><br/>
+		<input type="submit" title="Upload"/>
 	</form>
- <script type="text/javascript"> 
- 	
- 	$("#add").click( function() {
- 		var htmlData = '<p>Select a file : <input type="file" name="file" size="45" /> </p>'
- 		$("#item-list").append( htmlData );
- 	})
- 	
- </script>
 </body>
 </html>
